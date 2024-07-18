@@ -1,11 +1,11 @@
 # ------ Update pkgstats from archive
 
 library (pkgstats)
-path <- "/ua/cran-pkgstats/pkgstats/"
+path <- "/ua/cran-pkgstats/tarballs/"
+results_path <- "/ua/cran-pkgstats/pkgstats/"
 archive <- FALSE
-results_file <- file.path (path, "pkgstats-CRAN-all-update.Rds")
-results_file <- file.path (path, "pkgstats-CRAN-all.Rds")
-prev_results <- NULL
+results_file <- file.path (results_path, "pkgstats-CRAN-all.Rds")
+prev_results <- results_file
 chunk_size <- 10L
 save_full <- FALSE
 results_path <- "./junk"
