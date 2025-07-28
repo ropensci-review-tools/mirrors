@@ -6,7 +6,7 @@ results_path <- "/ua/cran-pkgstats/pkgstats/"
 archive <- FALSE
 results_file <- file.path (results_path, "pkgstats-CRAN-all.Rds")
 prev_results <- results_file
-chunk_size <- 10L
+chunk_size <- 100L
 save_full <- FALSE
 results_path <- "./junk"
 save_ex_calls <- FALSE
