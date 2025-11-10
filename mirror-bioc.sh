@@ -1,5 +1,33 @@
 #!/bin/bash
 
+NC='\033[0m'
+# RED='\033[0;31m' # red
+GRN='\033[0;32m' # green, or 1;32m for light green
+YEL='\033[0;33m'
+ARR='\u2192' # right arrow
+DASH='\u2014'
+
+echo -e "${YEL}${DASH}${DASH}${ARR}  ${NC}Enter/Default: Stable releases${NC}"
+echo -e "${YEL}${DASH}${DASH}${ARR}  ${NC}Anything else: Unstable dev versions${NC}"
+
+doit() {
+    echo -e -n "${YEL}Proceed to update $1 (y/n)?${NC} "
+    read DOIT
+    if [ "$DOIT" != "y" ]; then
+        echo -e "${YEL}Stopping update${NC}"
+        exit 0
+    fi
+}
+
+echo -e -n "${YEL}Enter option:${NC} "
+read OPT
+
+if [[ -z "$OPT"  ]]; then
+    doit "Stable, release versions of all Bioc repos"
+else
+    doit "Unstable, development versions of all Bioc repos"
+fi
+
 Rscript "mirror-bioc.R"
 
 # Stuff to make this work in cron
@@ -13,7 +41,11 @@ REGISTRY_DIR="bioc"
 
 mkdir -p "$REGISTRY_DIR"
 
-repos=$(jq -r '.[] | .url' "$JSON_FILE")
+if [[ -z "$OPT" ]]; then
+    repos=$(jq -r '.[] | .url_bioc' "$JSON_FILE")
+else
+    repos=$(jq -r '.[] | .url' "$JSON_FILE")
+fi
 
 readarray -t repo_urls <<< "$repos"
 
