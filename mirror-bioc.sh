@@ -54,16 +54,18 @@ for url in "${repo_urls[@]}"; do
     repo_name=$(basename "$url")
 
     if curl --output /dev/null --silent --head --fail "$url"; then
-        if [ -d "$REGISTRY_DIR/$repo_name" ]; then
+        if [[ -d "$REGISTRY_DIR/$repo_name" ]] && [[ -n $(find "$REGISTRY_DIR/$repo_name" -maxdepth 0 -mtime +7) ]]; then
             echo "Updating $url... as $REGISTRY_DIR/$repo_name"
             { cd "$REGISTRY_DIR/$repo_name"; git pull; cd ../..; } || { echo "Failed to enter directory $REGISTRY_DIR/$repo_name"; continue; }
-        else
+        elif [[ ! -d "$REGISTRY_DIR/$repo_name" ]]; then
             echo "Cloning $url as $REGISTRY_DIR/$repo_name"
             git clone "$url" "$REGISTRY_DIR/$repo_name"
+        else
+            echo "Skipping $url, already up-to-date"
         fi
 
         # Update submodules if they exist
-        if [ -d "$REGISTRY_DIR/$repo_name/.git/modules" ]; then
+        if [[ -d "$REGISTRY_DIR/$repo_name/.git/modules" ]] && [[ -n $(find "$REGISTRY_DIR/$repo_name" -maxdepth 0 -mtime +7) ]]; then
             cd "$REGISTRY_DIR/$repo_name" || { echo "Failed to enter directory $REGISTRY_DIR/$repo_name"; continue; }
             git submodule update --init --recursive
         fi
