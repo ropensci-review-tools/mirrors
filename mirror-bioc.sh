@@ -53,18 +53,22 @@ readarray -t repo_urls <<< "$repos"
 for url in "${repo_urls[@]}"; do
     repo_name=$(basename "$url")
 
-    if [ -d "$REGISTRY_DIR/$repo_name" ]; then
-        echo "Updating $url... as $REGISTRY_DIR/$repo_name"
-        { cd "$REGISTRY_DIR/$repo_name"; git pull; cd ../..; } || { echo "Failed to enter directory $REGISTRY_DIR/$repo_name"; continue; }
-    else
-        echo "Cloning $url as $REGISTRY_DIR/$repo_name"
-        git clone "$url" "$REGISTRY_DIR/$repo_name"
-    fi
+    if curl --output /dev/null --silent --head --fail "$url"; then
+        if [ -d "$REGISTRY_DIR/$repo_name" ]; then
+            echo "Updating $url... as $REGISTRY_DIR/$repo_name"
+            { cd "$REGISTRY_DIR/$repo_name"; git pull; cd ../..; } || { echo "Failed to enter directory $REGISTRY_DIR/$repo_name"; continue; }
+        else
+            echo "Cloning $url as $REGISTRY_DIR/$repo_name"
+            git clone "$url" "$REGISTRY_DIR/$repo_name"
+        fi
 
-    # Update submodules if they exist
-    if [ -d "$REGISTRY_DIR/$repo_name/.git/modules" ]; then
-        cd "$REGISTRY_DIR/$repo_name" || { echo "Failed to enter directory $REGISTRY_DIR/$repo_name"; continue; }
-        git submodule update --init --recursive
+        # Update submodules if they exist
+        if [ -d "$REGISTRY_DIR/$repo_name/.git/modules" ]; then
+            cd "$REGISTRY_DIR/$repo_name" || { echo "Failed to enter directory $REGISTRY_DIR/$repo_name"; continue; }
+            git submodule update --init --recursive
+        fi
+    else
+        echo "Skipping $url because not reachable"
     fi
 
     echo ""
