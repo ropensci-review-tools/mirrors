@@ -51,7 +51,7 @@ metabioc_dummy_registry <- function () {
             }
             pkgurl <- ghurls [1]
         }
-        list (package = x, url = pkgurl)
+        list (package = x, url = pkgurl, url_bioc = paste0 (baseurl, x))
     })
 }
 pkgs <- metabioc_dummy_registry ()
