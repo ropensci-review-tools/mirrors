@@ -1,6 +1,6 @@
 #!/bin/bash
 
-Rscript -e "mirror-bioc.R"
+Rscript "mirror-bioc.R"
 
 # Stuff to make this work in cron
 PATH="/bin:/usr/bin:/usr/local/bin:$PATH"  #Provide the path
