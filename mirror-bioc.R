@@ -4,6 +4,7 @@
 metabioc_dummy_registry <- function () {
     nomirror <- c ('SwathXtend', 'h5vc') # large git files
     skiplist <- c ('IntOMICS') # package was renamed bc trademarks
+    skiplist <- c (skiplist, "Anaquin") # removed from github
     yml <- yaml::read_yaml ("https://bioconductor.org/config.yaml")
     bioc_version <- yml$devel_version
     bioc <- jsonlite::read_json (sprintf ('https://bioconductor.org/packages/json/%s/bioc/packages.json', bioc_version))
