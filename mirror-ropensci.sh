@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd roregistry
+cd ropensci.r-universe.dev
 git pull origin gh-pages
 cd ..
 
@@ -10,7 +10,7 @@ PATH="/bin:/usr/bin:/usr/local/bin:$PATH"  #Provide the path
 
 set -e  # stop script if error
 
-JSON_FILE="roregistry/registry.json"
+JSON_FILE="ropensci.r-universe.dev/packages.json"
 REGISTRY_DIR="ropensci"
 
 mkdir -p "$REGISTRY_DIR"

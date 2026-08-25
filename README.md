@@ -2,7 +2,8 @@
 
 This repo contains scripts to mirror all R package sources from
 [CRAN](https://cran.r-project.org),
-[rOpenSci](https://github.com/ropensci/roregistry) and
+[rOpenSci](https://github.com/ropensci/ropensci.r-universe.dev/blob/gh-pages/packages.json)
+and
 [BioConductor](https://bioconductor.org/packages/release/BiocViews.html#___Software).
 These mirrors are then used to generate data for:
 
